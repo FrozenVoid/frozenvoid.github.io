@@ -1,0 +1,19 @@
+<html><body>
+Copy below to Golly "Set Rule" dialog
+<br><button onclick="genruleset()">Generate Ruleset:</button>
+ <textarea id="pattern"></textarea>
+<script>
+
+function genruleset(){
+var birth=[];
+var stay=[];
+if(Math.random()<0.1)birth.push(0);
+for(var i=1;i<9;i++){var r=Math.random();
+if(r>0.666)birth.push(i);
+if(r<0.333)stay.push(i);}
+birth=birth.join("")
+stay=stay.join("")
+var states=2+((Math.random()*254)|0);
+document.getElementById('pattern').textContent=`${birth}/${stay}/${states}:S333`}
+genruleset();
+</script></body></html>
