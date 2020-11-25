@@ -1,0 +1,170 @@
+<html>
+<head><title>Quasicrystal simulator</title><style>html,body{width:100%;height:100%;margin:0px;}
+            </style></head><body><canvas id='c' ></canvas></body>
+            <script>//663ms current
+            var inittime=Date.now();var starttime=inittime;
+            function addtm(str){document.title+=Date.now()-starttime+str;starttime=Date.now()}
+            function settm(str){document.title=Date.now()-starttime+str;starttime=Date.now()}
+            function dump(a)document.writeln(a.toString())
+            var abs=Math.abs
+            var cos=Math.cos
+            var sin=Math.sin
+            var w=window.innerWidth
+            var h =window.innerHeight
+            w=w-w%8;//unroll factor
+            var h8=h*8
+            var w8=w*8;
+            var canvas3=document.getElementById('c');
+            var context=canvas3.getContext("2d");
+            canvas3.width=window.innerWidth;
+            canvas3.height=window.innerHeight;
+            const size=w*h*4
+            var elsize=w*h;elsize+=(4-(elsize%4))
+            var wint=[];
+            for(var i=0;i<30;i++){wint[i]=new Uint32Array(w*h*0.25);}
+            var frame = 0;
+           var prodxf1=Array(h)
+            var prodxs1=Array(h)
+            for( i=0;i<h;i++){
+            prodxf1[i]=new Float64Array(w);
+            prodxs1[i]=new Float64Array(w);
+            }
+          function multifill(){addtm('mfill st')
+            fcos=new Float64Array(30);
+             fsin=new Float64Array(30);
+            var preyfsin1cos=new Float64Array(h)
+            var preyfsin2cos=new Float64Array(h)
+            var preyfsin3cos=new Float64Array(h)
+            var preyfsin1sin=new Float64Array(h)
+            var preyfsin2sin=new Float64Array(h)
+            var preyfsin3sin=new Float64Array(h)
+
+            var prexs1cos=new Float64Array(w)
+            var prexs2cos=new Float64Array(w)
+            var prexs3cos=new Float64Array(w)
+            var hprecos=new Float64Array(w)
+            var hpresin=new Float64Array(w)
+        function preyfill(){
+            for(i=0;i<30;i++){
+            fcos[i]=cos(i*0.20943951023931953)
+            fsin[i]=sin(i*0.20943951023931953)
+            }
+            var pc1,pc2,pc3,halfantih=h*0.0625;
+            for(i=0;i<h;i++){   
+            preycache=i*0.125-halfantih;
+            pc1=preycache*0.4338837391175581
+            pc2=preycache*0.7818314824680298
+            pc3=preycache*0.9749279121818236
+            preyfsin1cos[i]=cos(pc1)
+            preyfsin1sin[i]=sin(pc1)
+            preyfsin2cos[i]=cos(pc2)
+            preyfsin2sin[i]=sin(pc2)
+            preyfsin3cos[i]=cos(pc3)
+            preyfsin3sin[i]=sin(pc3)
+            }
+        }preyfill();
+        function prexfill(){
+        var preycache;
+            var halfantiw=w*0.0625;
+            for(i=0;i<w;i++){
+            preycache=i*0.125 - halfantiw
+            hpresin[i]=sin(preycache)*0.5
+            hprecos[i]=cos(preycache)*0.5
+            prexs1cos[i]=cos(preycache*0.9009688679024191)
+            prexs2cos[i]=cos(preycache*0.6234898018587336)
+            prexs3cos[i]=cos(preycache*0.22252093395631445)}}
+        prexfill();
+
+            var p,p2,p3,p4,p5,p6,i,co
+            var pc1,pc2,pc3,pc4,pc5,pc6
+            var ec1,ec2,ec3;
+            for( i=0;i<h;i++){
+            p=prodxf1[i];
+            p4=prodxs1[i]
+            pc1=preyfsin1cos[i];
+            pc2=preyfsin2cos[i];
+            pc3=preyfsin3cos[i];
+            pc4=preyfsin1sin[i];
+            pc5=preyfsin2sin[i];
+            pc6=preyfsin3sin[i];
+            for(co=0;co<w;co++){
+            ec1=prexs1cos[co]
+            ec2=prexs2cos[co]
+            ec3=prexs3cos[co]
+            p[co]=pc1*ec1+pc2*ec2+pc3*ec3+hprecos[co];
+            p4[co]=pc4*ec1+pc5*ec2+pc6*ec3+hpresin[co];}
+            }
+
+
+        }multifill();
+        addtm("re")
+            function redraw(){
+            var rs=new Float64Array(8);
+            var temps=new Int32Array(16)
+            var lvars=new Int32Array(16)
+        var r1=rs[0],r2=rs[1],r3=rs[2],r4=rs[3],r5=rs[4],r6=rs[5],r7=rs[6],r8=rs[7];
+            var n1=rs[8],n2=rs[9],n3=rs[10],n4=rs[11],n5=rs[12],n6=rs[13],n7=rs[14],n8=rs[15];
+            var temp1=temps[0],temp2=temps[1],temp3=temps[2],temp4=temps[3],temp5=temps[4],temp6=temps[5],temp7=temps[6],temp8=temps[7],t1=temps[8],t2=temps[9],t3=temps[10],t4=temps[11],t5=temps[12],t6=temps[13],t7=temps[14],t8=temps[15];;
+           var xf1,xs1,y=lvars[0],x=lvars[1],i=lvars[2];
+            for(var frame=0;frame<30;frame++){
+         var intload=wint[frame],xfracos=lvars[3]=fcos[frame],xfrasin=lvars[4]=fsin[frame];
+
+
+            for(y=0,i=0;y<h;y++){xf1=prodxf1[y];xs1=prodxs1[y];
+            x=0;while(x<w) {
+            r1=3.5+xf1[x]*xfracos-xs1[x++]*xfrasin
+            ;r2=3.5+xf1[x]*xfracos-xs1[x++]*xfrasin
+            ;r3=3.5+xf1[x]*xfracos-xs1[x++]*xfrasin
+            ;r4=3.5+xf1[x]*xfracos-xs1[x++]*xfrasin
+            ;r5=3.5+xf1[x]*xfracos-xs1[x++]*xfrasin
+            ;r6=3.5+xf1[x]*xfracos-xs1[x++]*xfrasin
+            ;r7=3.5+xf1[x]*xfracos-xs1[x++]*xfrasin
+            ;r8=3.5+xf1[x]*xfracos-xs1[x++]*xfrasin
+             temp1=(r1|0)
+             temp2=(r2|0)
+             temp3=(r3|0)
+             temp4=(r4|0)
+             temp5=(r5|0)
+             temp6=(r6|0)
+             temp7=(r7|0)
+             temp8=(r8|0)
+          t1=(temp1&1)+temp1-r1
+          t2=(temp2&1)+temp2-r2
+          t3=(temp3&1)+temp3-r3
+          t4=(temp4&1)+temp4-r4
+          t5=(temp5&1)+temp5-r5
+          t6=(temp6&1)+temp6-r6
+          t7=(temp7&1)+temp7-r7
+          t8=(temp8&1)+temp8-r8
+         
+            n1=(abs(t1)*0xff)
+            n2=(abs(t2)*0xff)
+            n3=(abs(t3)*0xff)
+            n4=(abs(t4)*0xff)
+            n5=(abs(t5)*0xff)
+            n6=(abs(t6)*0xff)
+            n7=(abs(t7)*0xff)
+            n8=(abs(t8)*0xff)
+            intload[i++]=(n1)|(n2<<8)|(n3<<16)|(n4<<24)
+            intload[i++]=(n5)|(n6<<8)|(n7<<16)|(n8<<24); }}}}
+        redraw();
+        var RGB=[],dispc=[];
+        function palgen(){
+        var ic,ir,ig,ib;
+            for(ic=0;ic<0xff;ic++){
+            ir=ic-31;ir*=ir>2;ig=ic-81;ig*=ig>8;ig=ig<<8;ib=(ic)<<16
+            RGB[ic]=ir|ig|ib|0xff000000;}}palgen();
+            addtm("ms render") 
+            function dispframe(){
+          if(!window.requestAnimationFrame){  window.requestAnimationFrame=window.requestAnimationFrame ||    window.webkitRequestAnimationFrame    || window.mozRequestAnimationFrame    || window.oRequestAnimationFrame    || window.msRequestAnimationFrame;}
+        if(++frame >= 30)frame = 0;
+            if(!dispc[frame]){
+        dispc[frame]=context.createImageData(w,h);//{width:w,height:h,data:Uint8ClampedArray(size)};
+            var tv=new Uint32Array(dispc[frame].data.buffer);
+            var intpixels=new Uint8Array(wint[frame].buffer);
+            for(var op=0,c=0;c<elsize;){tv[op++]=RGB[intpixels[c++]];}
+            delete(wint[frame]);};
+            context.putImageData(dispc[frame],0,0);
+            window.requestAnimationFrame(dispframe);}dispframe();
+
+            </script></body></html>
