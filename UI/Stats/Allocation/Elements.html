@@ -1,0 +1,225 @@
+<html>
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+<details>
+<summary>Elemental Balance</summary>
+<div id="elemental_balance">
+<br>
+
+
+<span  class="slider_tag OrderChaos" element="Chaos" >100</span>
+<input type="range" min="1" max="199" value="100" class="element_points" id="OrderChaos"  onchange='elset(this.value,this.id)'
+>
+<span  class="slider_tag OrderChaos" element="Order" >100</span>
+
+<br>
+
+
+<span  class="slider_tag FireEarth" element="Earth" >100</span>
+<input type="range" min="1" max="199" value="100" class="element_points" id="FireEarth"  onchange='elset(this.value,this.id)'
+>
+<span  class="slider_tag FireEarth" element="Fire" >100</span>
+
+
+<br>
+
+<span  class="slider_tag EtherVoid" element="Void" >100</span>
+<input type="range" min="1" max="199" value="100" class="element_points" id="EtherVoid"  onchange='elset(this.value,this.id)'>
+<span  class="slider_tag EtherVoid" element="Ether" >100</span>
+<br>
+
+<span  class="slider_tag WaterAir" element="Air" >100</span>
+<input type="range" min="1" max="199" value="100" class="element_points" id="WaterAir"  onchange='elset(this.value,this.id)'>
+<span  class="slider_tag WaterAir" element="Water" >100</span>
+
+<br>
+<details>
+<summary>Resistances</summary>
+<div id="resistances">
+<span element="Fire" name="Fire resistance:" class='resistance'></span>
+<span element="Earth" name="Earth resistance:" class='resistance'></span>
+<span element="Ether" name="Ether resistance:" class='resistance'></span>
+<span element="Void" name="Void resistance:" class='resistance'></span>
+<span element="Water" name="Water resistance:" class='resistance'></span>
+<span element="Air" name="Air resistance:" class='resistance'></span>
+<span element="Chaos" name="Chaos affinity:" class='resistance'></span>
+<span element="Order" name="Order affinity:" class='resistance'></span>
+</div>
+</details>
+
+<br>
+<details>
+<summary>Elemental Ratios for Traits</summary>
+<div id="elemental_ratio">
+
+
+<span class="ratio" name="Fire/Earth"  ></span>
+<span class="ratio" name="Fire/Ether"  ></span>
+<span class="ratio" name="Fire/Void"  ></span>
+<span class="ratio" name="Fire/Water" ></span>
+<span class="ratio" name="Fire/Air"  ></span>
+
+<span class="ratio" name="Ether/Void" ></span>
+<span class="ratio" name="Ether/Earth"  ></span>
+<span class="ratio" name="Ether/Water"  ></span>
+<span class="ratio" name="Ether/Air"  ></span>
+
+<span class="ratio" name="Water/Air"  ></span>
+<span class="ratio" name="Water/Void" ></span>
+<span class="ratio" name="Water/Earth"  ></span>
+
+<span class="ratio" name="Air/Void" ></span>
+<span class="ratio" name="Air/Earth"  ></span>
+
+<span class="ratio" name="Earth/Void"  ></span>
+
+
+</div><br>
+Additional ratios of ratios can be used for additional traits/stats.(e.g. (Earth/Fire) / (Water/Air) or (Void/(Water/Earth)). 
+</detail>
+
+</div>
+</details>
+
+<script name="rpg_core">
+const DEBUG=0;
+const num_precision=3;
+const maxelem_points=200;
+const stat_mult=40;
+const resistance_base=0.999;//
+const resistance_max=525.17;//
+const balance_base=0.993093;//50%
+var element_stats={"Fire":100,"Earth":100,
+"Ether":100,"Void":100,"Water":100,"Air":100,"Chaos":100,"Order":100};
+
+
+var ratio_name={"Stamina":["Fire/Earth",10.0],
+"Endurance":["Ether/Fire",20],
+"Spellpower":["Fire/Void" ,30],
+"Mindpower":["Water/Fire",40],
+"Strength":["Fire/Air",50],
+"Reflection":["Void/Ether",60],
+"Magic":["Ether/Earth",70],
+"Charisma":["Water/Ether",80],
+ "Defense":["Air/Ether",90],
+"Regeneration":["Water/Air",100],
+"Dexterity":["Void/Water",120],
+"Mobility":["Water/Earth",150],
+"Evasion":["Void/Air",200],
+"Swiftness":["Air/Earth",250],
+"Vitality":["Void/Earth",400],
+"Transcedence":["Void:Earth/Water",24.10],
+"Premonition":["Air/Water:Chaos/Fire",23.1],
+"Precision":["Order:Fire/Air",10.2]
+}
+
+var secondary_ratio_mult={
+"Fire/Earth:Ether/Void":1.0,
+"Fire/Earth:Ether/Water":2.0,
+"Fire/Earth:Ether/Air":3.0,
+"Fire/Earth:Water/Air":3.0,
+
+"Fire/Water:Ether/Void":1.0,
+"Fire/Water:Ether/Earth":2.0,
+"Fire/Water:Ether/Air":4.0
+
+}
+
+
+function dbg(){if(DEBUG)console.log(arguments)}
+
+function set_resist(){
+for(var i in element_stats){
+document.querySelector(`#elemental_balance>span[element=${i}]`).innerHTML=element_stats[i];
+
+var resval=resistance_max*(1-Math.pow(resistance_base,element_stats[i]));
+document.querySelector(`#resistances>span[element=${i}]`).innerHTML=resval.toFixed(num_precision)+"%";
+}
+
+}
+
+function parse_ratio2(str){
+var args=str.split("/");
+dbg(args);
+if(args.length==1)return element_stats[args[0]]||1;
+var elm1=element_stats[args[0]]||1;
+var elm2=element_stats[args[1]]||1;
+return elm1/elm2;
+}
+function parse_ratio(str){
+var args=str.split(":");//
+if(args.length==1){//simple x/y ratio
+return parse_ratio2(args[0]);
+}else{//complex [x|x/y]:[x|x/y] format
+var first_ratio=parse_ratio2(args[0]);
+var second_ratio=parse_ratio2(args[1]);
+return first_ratio/second_ratio;
+}
+
+}
+function set_ratio(){
+var rhtml=document.querySelector("#elemental_ratio")
+rhtml.innerHTML="Trait : Value (Ratio Formula) Ratio * Multiplier";
+//var rat=document.querySelectorAll(`#elemental_ratio>span.ratio`)
+for(var i in ratio_name){
+var res="";
+var ratio_text=ratio_name[i][0];
+var ratio=parse_ratio(ratio_name[i][0]);
+if(isNaN(ratio))dbg(i,ratio_name[i],ratio,element_stats);
+dbg("Rationame:",name,ratio_name[name])
+res+=(ratio*ratio_name[i][1]).toFixed(num_precision)
+res+=" ("+ratio_text+")";
+res+=" = " +ratio.toFixed(num_precision)
+res+=" * "+ratio_name[i][1].toFixed(num_precision);
+
+rhtml.innerHTML+=`<span class="ratio" name="${i}" >${res}</span>`
+
+}
+
+
+}
+
+function update_elements(){set_resist();set_ratio();}
+
+
+function elset(val,id){
+dbg(val,id);
+switch(id){
+case "FireEarth":;
+element_stats["Fire"]=val;
+element_stats["Earth"]=maxelem_points-val;
+;break;
+
+case "EtherVoid":;
+element_stats["Ether"]=val;
+element_stats["Void"]=maxelem_points-val;
+;break;
+case "WaterAir":;
+element_stats["Water"]=val;
+element_stats["Air"]=maxelem_points-val;
+;break;
+case "OrderChaos":;
+element_stats["Chaos"]=maxelem_points-val;
+element_stats["Order"]=val;break;
+default:;dbg("Bad id");
+
+}
+
+update_elements();
+}
+
+
+setTimeout(update_elements,200);
+
+
+</script>
+<style>
+#resistances>span::before{content:attr(name)}
+#elemental_ratio>.ratio,#resistances>span{display: block;}
+#elemental_ratio>.ratio::before{content:attr(name)": "}
+#elemental_balance>.slider_tag::before{content:attr(element)": "}
+</style>
+</body>
+</html>
