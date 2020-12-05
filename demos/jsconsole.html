@@ -1,0 +1,16 @@
+<html><head><meta charset="UTF-8">
+<title>Immediate JS console</title></head>
+<body><textarea id="input"  >
+enter javascript</textarea>
+<textarea id="output"></textarea>
+<script>
+var area = document.querySelector('#input');
+area.value= window.sessionStorage.input|| "";
+function evinp(){
+ with(Math){
+window.sessionStorage.input=area.value;
+document.getElementById('output').value=eval(area.value);}
+}
+area.addEventListener('input',evinp, false);
+</script>
+<style>textarea{width:100%;}#input{height:90vh}#output{height:10vh}</style></body></html>
