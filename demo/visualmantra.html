@@ -1,0 +1,27 @@
+<html><head>
+<meta charset="utf-8">
+<title>Visual Mantra(editable) </title></head>
+<body>
+<div class='colorshift' contenteditable="true">AIM</div>
+<hr><style style="display:block" contenteditable="true">
+.colorshift {
+    color: #f35626;
+    background-image: -webkit-linear-gradient(92deg, #f35626, #feab3a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-animation: hue 20s infinite linear;
+}
+
+@-webkit-keyframes hue {
+    from {
+      -webkit-filter: hue-rotate(0deg);
+    }
+
+    to {
+      -webkit-filter: hue-rotate(360deg);
+    }
+}
+style:before{content:"Edit style:"}
+
+.colorshift{font-size:50vh;line-height:51vh;font-family:sans serif;}
+</style></body></html>
