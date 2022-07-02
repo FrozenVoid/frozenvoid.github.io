@@ -60,8 +60,8 @@ document.title="Swaps:"+swaptotal+" Switches:"+switches+" Fails:"+swapfails + " 
 
  
  function pixdiff(x,y){
-             var xarr=new Uint32Array(8);
- xarr=(pixneighb(y));var sum=0;
+ const xarr=[pixels[y-1],pixels[y+1], pixels[y-w-1],pixels[y-w],pixels[y-w+1], pixels[y+w-1],pixels[y+w],pixels[y+w+1] ];      
+ var sum=0;
  for(var i=0;i<xarr.length;i++){
  
  sum+=bitCount((pixels[x]&xarr[i])); }
