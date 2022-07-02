@@ -83,10 +83,14 @@ var swapy=pixdiff(y,x);
 var score1=diffx-swapx;
 var score2=diffy-swapy;
 var xtar=(diffx>swapx),ytar=diffy>swapy;
-if(!(xtar===ytar)){pixswitch(x,y);switches++;return;}
+if((xtar===ytar)){
+if(xtar===true){pixswap(x,y);swaptotal++;}
+           else{swapfails++;}
+}else{
+         
+         pixswitch(x,y);switches++;}
       
-if(xtar===true){pixswap(x,y);swaptotal++;return;}
-   swapfails++;
+
 
 }
 function swapanim(){
