@@ -63,8 +63,8 @@ document.title="Swaps:"+swaptotal+" Switches:"+switches+" Fails:"+swapfails + " 
  const xarr=[pixels[y-1],pixels[y+1], pixels[y-w-1],pixels[y-w],pixels[y-w+1], pixels[y+w-1],pixels[y+w],pixels[y+w+1] ];      
  var sum=0;
  for(var i=0;i<xarr.length;i++){
- 
- sum+=bitCount((pixels[x]&xarr[i])); }
+ it[9]=(pixels[x]&xarr[i]);
+ sum+=bitCount(it[9]); }
 
 //median
  return sum; }
@@ -80,13 +80,13 @@ function pixswitch(x,y){pixels[x]=pixels[y];switches++;;
 }
 
 function swaptest(x,y){
-var diffx=pixdiff(x,x);//originals
-var diffy=pixdiff(y,y);
-var swapx=pixdiff(x,y);//swapped
-var swapy=pixdiff(y,x);
-var score1=diffx-swapx;
-var score2=diffy-swapy;
-var xtar=(diffx>swapx),ytar=diffy>swapy;
+const  diffx=pixdiff(x,x);//originals
+const diffy=pixdiff(y,y);
+const swapx=pixdiff(x,y);//swapped
+const swapy=pixdiff(y,x);
+const score1=diffx-swapx;
+const score2=diffy-swapy;
+const xtar=(diffx>swapx),ytar=diffy>swapy;
 if((xtar===ytar)){
 if(xtar===true){pixswap(x,y);}
            else{swapfails++;}
