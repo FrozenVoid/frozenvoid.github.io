@@ -85,7 +85,7 @@ var score2=diffy-swapy;
 var xtar=(diffx>swapx),ytar=diffy>swapy;
 if(!(xtar===ytar)){pixswitch(x,y);switches++;return;}
       
-if(xtar===1){pixswap(x,y);swaptotal++;return;}
+if(xtar===true){pixswap(x,y);swaptotal++;return;}
    swapfails++;
 
 }
