@@ -67,12 +67,14 @@ document.title="Swaps:"+swaptotal+" Switches:"+switches+" Fails:"+swapfails + " 
 //median
  return sum; }
 
-function pixswap(x,y){it[0]=pixels[x];pixels[x]=pixels[y];
+function pixswap(x,y){
+swaptotal++;            
+            it[0]=pixels[x];pixels[x]=pixels[y];
 pixels[y]=it[0];
 //dbg("Swap:"+x+"/"+y);
 }
 //switch x to y,
-function pixswitch(x,y){pixels[x]=pixels[y];;
+function pixswitch(x,y){pixels[x]=pixels[y];switches++;;
 }
 
 function swaptest(x,y){
@@ -84,17 +86,17 @@ var score1=diffx-swapx;
 var score2=diffy-swapy;
 var xtar=(diffx>swapx),ytar=diffy>swapy;
 if((xtar===ytar)){
-if(xtar===true){pixswap(x,y);swaptotal++;}
+if(xtar===true){pixswap(x,y);}
            else{swapfails++;}
 }else{
          
-         pixswitch(x,y);switches++;}
+         pixswitch(x,y);}
       
 
 
 }
 function swapanim(){
-for(var i=0;i<16800;i++){
+for(var i=0;i<10800;i++){
 var pix3=pix2();
 swaptest(pix3[0],pix3[1]);
 }
