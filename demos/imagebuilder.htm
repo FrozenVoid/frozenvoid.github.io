@@ -83,12 +83,10 @@ var swapy=pixdiff(y,x);
 var score1=diffx-swapx;
 var score2=diffy-swapy;
 var xtar=(diffx>swapx),ytar=diffy>swapy;
-if(xtar==0 && ytar==0){swapfails++;}
+if(xtar!=ytar){pixswitch(x,y);switches++;}
+ else if(xtar){pixswap(x,y);swaptotal++;}
+    else{swapfails++;}
 
-if(xtar==1 && ytar==1){pixswap(x,y);swaptotal++;}
-
-if(xtar==0 && ytar==1){pixswitch(x,y);switches++;}
-if(xtar==1 && ytar==0){pixswitch(y,x);switches++;}
 
 
 
