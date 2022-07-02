@@ -58,11 +58,13 @@ document.title="Swaps:"+swaptotal+" Switches:"+switches+" Fails:"+swapfails + " 
 
 //x=center,y=target
 
- var xarr=new Uint32Array(8);
+ 
  function pixdiff(x,y){
+             var xarr=new Uint32Array(8);
  xarr=(pixneighb(y));var sum=0;
- for(var i=0;i<xarr.length;i++){it[1]=(pixels[x]&xarr[i]);
- sum+=bitCount(it[1]); }
+ for(var i=0;i<xarr.length;i++){
+ 
+ sum+=bitCount((pixels[x]&xarr[i])); }
 
 //median
  return sum; }
