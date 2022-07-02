@@ -83,9 +83,9 @@ var swapy=pixdiff(y,x);
 var score1=diffx-swapx;
 var score2=diffy-swapy;
 var xtar=(diffx>swapx),ytar=diffy>swapy;
-if(xtar!=ytar){pixswitch(x,y);switches++;return;}
-       
- if(xtar){pixswap(x,y);swaptotal++;return;}
+if(!(xtar===ytar)){pixswitch(x,y);switches++;return;}
+      
+if(xtar===1){pixswap(x,y);swaptotal++;return;}
    swapfails++;
 
 }
