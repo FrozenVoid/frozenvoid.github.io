@@ -100,6 +100,8 @@ for(var i=0;i<10800;i++){
 var pix3=pix2();
 swaptest(pix3[0],pix3[1]);
 }
- setTimeout(swapanim,1);
+            
+ window.requestAnimationFrame(swapanim);           
+ 
 }swapanim();
             </script></body></html>
